@@ -39,7 +39,7 @@
 // ============================================================
 
 const SHEET_ID    = "REPLACE_WITH_SHEET_ID";
-const ADMIN_EMAIL = "hello@movefitness.my";
+const ADMIN_EMAIL = "jpactupac@gmail.com";
 const SHEET_NAME  = "Bookings";
 
 // Column index map (1-based)
