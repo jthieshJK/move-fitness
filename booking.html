@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Class — Move Fitness</title>
+  <meta name="description" content="Book your Pilates class at Move Fitness, Mont Kiara, Kuala Lumpur." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link rel="stylesheet" href="booking.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="booking-nav">
+    <a href="index.html" class="booking-nav__logo" aria-label="Move Fitness Home">
+      <svg viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg" width="110">
+        <text x="0" y="34" font-family="Cormorant Garamond, serif" font-size="32" font-weight="500" letter-spacing="6" fill="currentColor">MOVE</text>
+        <line x1="0" y1="39" x2="160" y2="39" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+        <text x="2" y="50" font-family="DM Sans, sans-serif" font-size="10" font-weight="300" letter-spacing="5" fill="currentColor" opacity="0.75">FITNESS</text>
+      </svg>
+    </a>
+    <div class="booking-steps-indicator" id="stepsIndicator">
+      <div class="step-indicator active" data-step="1">
+        <span class="step-indicator__num">1</span>
+        <span class="step-indicator__label">Class</span>
+      </div>
+      <div class="step-indicator__line"></div>
+      <div class="step-indicator" data-step="2">
+        <span class="step-indicator__num">2</span>
+        <span class="step-indicator__label">Time</span>
+      </div>
+      <div class="step-indicator__line"></div>
+      <div class="step-indicator" data-step="3">
+        <span class="step-indicator__num">3</span>
+        <span class="step-indicator__label">Details</span>
+      </div>
+      <div class="step-indicator__line"></div>
+      <div class="step-indicator" data-step="4">
+        <span class="step-indicator__num">✓</span>
+        <span class="step-indicator__label">Done</span>
+      </div>
+    </div>
+    <a href="index.html" class="booking-nav__back">← Back to site</a>
+  </header>
+
+  <main class="booking-main">
+    <div class="booking-wrapper">
+
+      <!-- STEP 1 — Choose Class -->
+      <div class="booking-step" id="step1">
+        <div class="booking-step__header">
+          <span class="step-label">Step 1 of 3</span>
+          <h1 class="booking-step__title">Choose Your Class</h1>
+          <div class="session-toggle">
+            <button class="session-toggle__btn active" data-type="group" id="toggleGroup">Group Class</button>
+            <button class="session-toggle__btn" data-type="private" id="togglePrivate">Private / Duo</button>
+          </div>
+        </div>
+
+        <div class="class-select-grid" id="classSelectGrid">
+
+          <div class="class-select-card" data-class="Reformer Foundations" data-type="group">
+            <div class="class-select-card__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="class-select-card__level level--beginner">Beginner</span>
+            <h3 class="class-select-card__name">Reformer Foundations</h3>
+            <p class="class-select-card__desc">Entry-level reformer. Build strength, alignment, and control from the ground up.</p>
+            <div class="class-select-card__meta"><span>55 min</span><span class="class-select-card__price">RM 85</span></div>
+          </div>
+
+          <div class="class-select-card" data-class="Dynamic Flow" data-type="group">
+            <div class="class-select-card__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="class-select-card__level level--intermediate">Intermediate</span>
+            <h3 class="class-select-card__name">Dynamic Flow</h3>
+            <p class="class-select-card__desc">Full-body flowing reformer sequence. Expect to sweat.</p>
+            <div class="class-select-card__meta"><span>55 min</span><span class="class-select-card__price">RM 95</span></div>
+          </div>
+
+          <div class="class-select-card" data-class="Core Sculpt" data-type="group">
+            <div class="class-select-card__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="class-select-card__level level--all">All Levels</span>
+            <h3 class="class-select-card__name">Core Sculpt</h3>
+            <p class="class-select-card__desc">Deep core work combining reformer, ring, and ball.</p>
+            <div class="class-select-card__meta"><span>45 min</span><span class="class-select-card__price">RM 90</span></div>
+          </div>
+
+          <div class="class-select-card" data-class="Stretch & Restore" data-type="group">
+            <div class="class-select-card__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="class-select-card__level level--all">All Levels</span>
+            <h3 class="class-select-card__name">Stretch &amp; Restore</h3>
+            <p class="class-select-card__desc">Restorative class focused on flexibility, breath, and decompression.</p>
+            <div class="class-select-card__meta"><span>60 min</span><span class="class-select-card__price">RM 80</span></div>
+          </div>
+
+          <div class="class-select-card" data-class="Private Session" data-type="private">
+            <div class="class-select-card__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="class-select-card__level level--all">All Levels</span>
+            <h3 class="class-select-card__name">Private Session</h3>
+            <p class="class-select-card__desc">1-on-1 with a certified instructor. Fully customised.</p>
+            <div class="class-select-card__meta"><span>60 min</span><span class="class-select-card__price">RM 220</span></div>
+          </div>
+
+          <div class="class-select-card" data-class="Duo Session" data-type="private">
+            <div class="class-select-card__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="class-select-card__level level--all">All Levels</span>
+            <h3 class="class-select-card__name">Duo Session</h3>
+            <p class="class-select-card__desc">Private session for two. Split the cost, double the accountability.</p>
+            <div class="class-select-card__meta"><span>60 min</span><span class="class-select-card__price">RM 160/person</span></div>
+          </div>
+
+        </div>
+
+        <div class="booking-step__footer">
+          <div></div>
+          <button class="btn btn--gold btn--lg" id="step1Next" disabled>Next: Choose Time →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 — Choose Date & Time -->
+      <div class="booking-step hidden" id="step2">
+        <div class="booking-step__header">
+          <span class="step-label">Step 2 of 3</span>
+          <h2 class="booking-step__title">Choose Date &amp; Time</h2>
+        </div>
+
+        <div class="step2-grid">
+          <div class="calendar-section">
+            <div class="calendar-header">
+              <button class="calendar-nav" id="calPrev" aria-label="Previous month">&#8249;</button>
+              <span class="calendar-month" id="calMonth"></span>
+              <button class="calendar-nav" id="calNext" aria-label="Next month">&#8250;</button>
+            </div>
+            <div class="calendar-grid">
+              <div class="calendar-day-label">M</div>
+              <div class="calendar-day-label">T</div>
+              <div class="calendar-day-label">W</div>
+              <div class="calendar-day-label">T</div>
+              <div class="calendar-day-label">F</div>
+              <div class="calendar-day-label">S</div>
+              <div class="calendar-day-label calendar-day-label--sun">S</div>
+            </div>
+            <div class="calendar-days" id="calDays"></div>
+          </div>
+
+          <div class="timeslot-section">
+            <h3 class="timeslot-section__title">Available Times</h3>
+            <div class="timeslot-list" id="timeslotList">
+              <p class="timeslot-placeholder">Select a date to see available times.</p>
+            </div>
+            <div class="instructor-select" id="instructorSelect" style="display:none">
+              <label class="field-label" for="instructorDropdown">Instructor</label>
+              <select class="field-input" id="instructorDropdown"></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-step__footer">
+          <button class="btn btn--outline" id="step2Back">← Back</button>
+          <button class="btn btn--gold btn--lg" id="step2Next" disabled>Next: Your Details →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 — Details Form -->
+      <div class="booking-step hidden" id="step3">
+        <div class="booking-step__header">
+          <span class="step-label">Step 3 of 3</span>
+          <h2 class="booking-step__title">Your Details</h2>
+        </div>
+
+        <div class="booking-summary-bar" id="bookingSummaryBar">
+          <!-- filled by JS -->
+        </div>
+
+        <form class="booking-form" id="bookingForm" novalidate>
+          <div class="form-row form-row--2">
+            <div class="form-field">
+              <label class="field-label" for="fullName">Full Name <span class="required">*</span></label>
+              <input class="field-input" type="text" id="fullName" name="fullName" placeholder="e.g. Amirah Shahidan" required autocomplete="name" />
+              <span class="field-error" id="nameError"></span>
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="email">Email Address <span class="required">*</span></label>
+              <input class="field-input" type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+              <span class="field-error" id="emailError"></span>
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="field-label" for="phone">Phone Number <span class="required">*</span></label>
+            <input class="field-input" type="tel" id="phone" name="phone" placeholder="+60 12-345 6789" required autocomplete="tel" />
+            <span class="field-error" id="phoneError"></span>
+          </div>
+          <div class="form-field">
+            <label class="field-label" for="notes">Special Notes <span class="optional">(Optional)</span></label>
+            <textarea class="field-input field-textarea" id="notes" name="notes" placeholder="Any injuries, preferences, or questions?" rows="3"></textarea>
+          </div>
+          <div class="form-field form-field--checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" id="policyCheck" required />
+              <span class="checkbox-custom"></span>
+              <span>I agree to the <strong>24-hour cancellation policy</strong>. Cancellations within 24 hours are non-refundable.</span>
+            </label>
+            <span class="field-error" id="policyError"></span>
+          </div>
+
+          <div class="booking-step__footer">
+            <button type="button" class="btn btn--outline" id="step3Back">← Back</button>
+            <button type="submit" class="btn btn--gold btn--lg" id="submitBtn">
+              <span id="submitBtnText">Confirm Booking</span>
+              <span class="spinner hidden" id="submitSpinner">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" opacity="0.75"/></svg>
+              </span>
+            </button>
+          </div>
+        </form>
+
+        <div class="form-error-banner hidden" id="formErrorBanner">
+          Something went wrong. Please WhatsApp us directly at <a href="https://wa.me/60123456789">+60 12-345 6789</a>.
+        </div>
+      </div>
+
+      <!-- CONFIRMATION -->
+      <div class="booking-step hidden" id="stepConfirm">
+        <div class="confirmation">
+          <div class="confirmation__icon-wrap">
+            <svg class="confirmation__circle" viewBox="0 0 100 100" width="100" height="100">
+              <circle class="confirmation__circle-bg" cx="50" cy="50" r="45" fill="none" stroke="rgba(200,169,110,0.2)" stroke-width="3"/>
+              <circle class="confirmation__circle-stroke" cx="50" cy="50" r="45" fill="none" stroke="#c8a96e" stroke-width="3" stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+              <polyline class="confirmation__check" points="30,52 45,67 70,38" fill="none" stroke="#c8a96e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="60" stroke-dashoffset="60"/>
+            </svg>
+          </div>
+          <h2 class="confirmation__heading">You're booked in.</h2>
+          <p class="confirmation__sub">A confirmation has been sent to your email. See you on the mat.</p>
+
+          <div class="confirmation__summary" id="confirmationSummary">
+            <!-- filled by JS -->
+          </div>
+
+          <p class="confirmation__note">Please arrive <strong>10 minutes early</strong>. Grip socks required — available at reception for <strong>RM 15</strong>.</p>
+          <a href="index.html" class="btn btn--gold btn--lg">Back to Home</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="booking.js"></script>
+</body>
+</html>
