@@ -157,11 +157,153 @@ function doPost(e) {
   }
 }
 
-// Allow CORS preflight
+// ============================================================
+//  doGet — Read endpoint for Admin Dashboard
+//  Returns all bookings + computed stats as JSON
+//  Usage: fetch(APPS_SCRIPT_URL + "?action=getBookings")
+//         fetch(APPS_SCRIPT_URL + "?action=getStats")
+// ============================================================
 function doGet(e) {
+  const action = e && e.parameter && e.parameter.action ? e.parameter.action : 'ping';
+
+  try {
+    if (action === 'getBookings') {
+      return jsonResponse(getBookingsData());
+    }
+    if (action === 'getStats') {
+      return jsonResponse(getStatsData());
+    }
+    // Default ping
+    return jsonResponse({ status: 'ok', message: 'Move Fitness Booking API' });
+  } catch (err) {
+    return jsonResponse({ status: 'error', message: err.toString() });
+  }
+}
+
+function jsonResponse(obj) {
   return ContentService
-    .createTextOutput(JSON.stringify({ status: "ok", message: "Move Fitness Booking API" }))
+    .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ---- Read all bookings from Sheet ----
+function getBookingsData() {
+  const sheet = getSheet();
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return { status: 'success', bookings: [] };
+
+  const tz = Session.getScriptTimeZone();
+  const bookings = [];
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const rawDate = row[COL.CLASS_DATE - 1];
+    const dateStr = rawDate instanceof Date
+      ? Utilities.formatDate(rawDate, tz, 'd MMM yyyy')
+      : rawDate.toString();
+    const tsRaw = row[COL.TIMESTAMP - 1];
+    const tsStr = tsRaw instanceof Date
+      ? Utilities.formatDate(tsRaw, tz, 'd MMM yyyy HH:mm')
+      : tsRaw.toString();
+
+    bookings.push({
+      id:           i,
+      bookingId:    row[COL.BOOKING_ID         - 1],
+      name:         row[COL.CLIENT_NAME        - 1],
+      email:        row[COL.CLIENT_EMAIL       - 1],
+      phone:        row[COL.CLIENT_PHONE       - 1],
+      className:    row[COL.CLASS_NAME         - 1],
+      date:         dateStr,
+      time:         row[COL.CLASS_TIME         - 1],
+      instructor:   row[COL.INSTRUCTOR         - 1],
+      notes:        row[COL.NOTES             - 1],
+      status:       row[COL.STATUS            - 1],
+      timestamp:    tsStr,
+    });
+  }
+
+  return { status: 'success', bookings: bookings };
+}
+
+// ---- Compute stats from Sheet ----
+function getStatsData() {
+  const sheet = getSheet();
+  const data = sheet.getDataRange().getValues();
+  const tz = Session.getScriptTimeZone();
+  const today = new Date();
+  const todayStr = Utilities.formatDate(today, tz, 'd MMM yyyy');
+
+  // Current month
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  let todayCount = 0;
+  let monthCount = 0;
+  let monthRevenue = 0;
+  const classCounts = {};
+  const weekCounts = { Mon:0, Tue:0, Wed:0, Thu:0, Fri:0, Sat:0, Sun:0 };
+  const DAY_ABBR = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const CLASS_PRICES = {
+    'Reformer Foundations': 85,
+    'Dynamic Flow': 95,
+    'Core Sculpt': 90,
+    'Stretch & Restore': 80,
+    'Private Session': 220,
+    'Duo Session': 160,
+  };
+  const todayClasses = [];
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const status = row[COL.STATUS - 1];
+    if (status === 'Cancelled') continue;
+
+    const rawDate = row[COL.CLASS_DATE - 1];
+    const dateStr = rawDate instanceof Date
+      ? Utilities.formatDate(rawDate, tz, 'd MMM yyyy')
+      : rawDate.toString();
+
+    const className = row[COL.CLASS_NAME - 1];
+    classCounts[className] = (classCounts[className] || 0) + 1;
+
+    // Today's classes
+    if (dateStr === todayStr) {
+      todayCount++;
+      todayClasses.push({
+        time:       row[COL.CLASS_TIME  - 1],
+        className:  className,
+        instructor: row[COL.INSTRUCTOR  - 1],
+        name:       row[COL.CLIENT_NAME - 1],
+      });
+    }
+
+    // Month bookings + revenue
+    let classDate = rawDate instanceof Date ? rawDate : new Date(rawDate);
+    if (!isNaN(classDate) && classDate >= monthStart) {
+      monthCount++;
+      monthRevenue += CLASS_PRICES[className] || 0;
+    }
+
+    // Week day counts (past 7 days)
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 6);
+    if (!isNaN(classDate) && classDate >= sevenDaysAgo && classDate <= today) {
+      const abbr = DAY_ABBR[classDate.getDay()];
+      if (weekCounts[abbr] !== undefined) weekCounts[abbr]++;
+    }
+  }
+
+  // Most popular class
+  const mostPopular = Object.entries(classCounts).sort((a,b) => b[1]-a[1])[0];
+
+  return {
+    status: 'success',
+    todayCount,
+    monthCount,
+    monthRevenue,
+    mostPopular: mostPopular ? mostPopular[0] : 'N/A',
+    weekCounts,
+    todayClasses,
+  };
 }
 
 // ============================================================
